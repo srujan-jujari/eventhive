@@ -1,0 +1,45 @@
+/* Dark Gradient Background */
+.dark-gradient {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Title Glow Effect */
+.title-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                 0 0 20px rgba(0, 123, 255, 0.4);
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Add Event Card */
+.add-event-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    border: none;
+}
+
+/* Event Cards styling */
+.event-card {
+    border-radius: 15px;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Hover Animation for Cards */
+.event-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5) !important;
+}
+
+/* Button Animations */
+.btn-book {
+    transition: all 0.2s;
+}
+
+.btn-book:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(25, 135, 84, 0.6);
+}

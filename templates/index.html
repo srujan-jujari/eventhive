@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHive – Event Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="dark-gradient">
+    <div class="container py-5">
+        <h1 class="text-center text-light mb-5 title-glow">EventHive</h1>
+        
+        <!-- Add Event Form -->
+        <div class="card add-event-card mb-5 shadow-lg">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Add New Event</h4>
+                <form action="/add" method="POST" class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="name" placeholder="Event Name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" name="tickets" placeholder="Total Tickets" required min="1">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Add Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Events List -->
+        <h3 class="text-light mb-4">Available Events</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for event in events %}
+            <div class="col">
+                <div class="card h-100 event-card shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">{{ event.name }}</h5>
+                        <p class="card-text">
+                            <span class="fs-1 fw-bold {% if event.tickets == 0 %}text-danger{% else %}text-success{% endif %}">
+                                {{ event.tickets }}
+                            </span><br>
+                            <small class="text-muted">Tickets Available</small>
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-center pb-4">
+                        {% if event.tickets > 0 %}
+                        <form action="/book/{{ event.id }}" method="POST">
+                            <button type="submit" class="btn btn-success rounded-pill px-4 btn-book">Book Ticket</button>
+                        </form>
+                        {% else %}
+                        <button class="btn btn-secondary rounded-pill px-4" disabled>Sold Out</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center text-light">
+                <p>No events found. Add one above!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

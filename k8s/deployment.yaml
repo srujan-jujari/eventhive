@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventhive-deployment
+  labels:
+    app: eventhive
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eventhive
+  template:
+    metadata:
+      labels:
+        app: eventhive
+    spec:
+      containers:
+      - name: eventhive
+        image: yourdockerhub/eventhive:latest
+        ports:
+        - containerPort: 5000
