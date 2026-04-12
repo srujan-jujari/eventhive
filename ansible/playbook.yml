@@ -3,12 +3,21 @@
   hosts: eventhive_nodes
   become: yes
   tasks:
+    - name: Disable swap
+      command: swapoff -a
+      when: ansible_swaptotal_mb > 0
+
+    - name: Remove swap from fstab
+      replace:
+        path: /etc/fstab
+        regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+        replace: '# \1'
+
     - name: Update apt packages
       apt:
         update_cache: yes
-        upgrade: dist
 
-    - name: Install dependencies required for Docker and K8s
+    - name: Install dependencies
       apt:
         name:
           - apt-transport-https
@@ -19,9 +28,23 @@
         state: present
 
     - name: Install Docker
-      shell: curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+      shell: curl -fsSL https://get.docker.com | sh
       args:
         creates: /usr/bin/docker
+
+    - name: Configure Docker to use systemd cgroup driver
+      copy:
+        dest: /etc/docker/daemon.json
+        content: |
+          {
+            "exec-opts": ["native.cgroupdriver=systemd"],
+            "log-driver": "json-file",
+            "log-opts": {
+              "max-size": "100m"
+            },
+            "storage-driver": "overlay2"
+          }
+      notify: restart docker
 
     - name: Add ubuntu user to docker group
       user:
@@ -46,3 +69,46 @@
           - kubeadm
           - kubectl
         state: present
+        update_cache: yes
+
+    - name: Enable kubelet service
+      service:
+        name: kubelet
+        enabled: yes
+
+    - name: Initialize Kubernetes cluster
+      command: kubeadm init --pod-network-cidr=10.244.0.0/16
+      args:
+        creates: /etc/kubernetes/admin.conf
+
+    - name: Setup kubeconfig for ubuntu user
+      file:
+        path: /home/ubuntu/.kube
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0755
+
+    - name: Copy admin.conf to ubuntu user's kube directory
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ubuntu/.kube/config
+        owner: ubuntu
+        group: ubuntu
+        mode: 0644
+        remote_src: yes
+
+    - name: Install Flannel Pod Network
+      become: false
+      command: kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+    - name: Untaint control-plane node to allow pod scheduling
+      become: false
+      command: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+      ignore_errors: yes
+
+  handlers:
+    - name: restart docker
+      service:
+        name: docker
+        state: restarted

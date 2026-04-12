@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Create Event - EventHive{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 pt-2">
+    <div class="col-md-6">
+        <div class="card auth-card shadow-lg border-0 bg-glassmorphism text-white">
+            <div class="card-body p-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-bold m-0 text-primary">Create Event</h2>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-outline-light">Back</a>
+                </div>
+                
+                <p class="text-light opacity-75 mb-4">Add a new event to the EventHive platform. All users will be able to see and book tickets for this event.</p>
+                
+                <form action="{{ url_for('create_event') }}" method="POST">
+                    <div class="mb-4">
+                        <label for="name" class="form-label text-light opacity-75">Event Name</label>
+                        <input type="text" class="form-control form-control-lg bg-dark text-white border-secondary" id="name" name="name" required placeholder="e.g. AWS Summit 2026">
+                    </div>
+                    <div class="mb-5">
+                        <label for="tickets" class="form-label text-light opacity-75">Total Tickets Available</label>
+                        <input type="number" class="form-control form-control-lg bg-dark text-white border-secondary" id="tickets" name="tickets" required min="1" placeholder="e.g. 150">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold shadow glass-btn">Publish Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

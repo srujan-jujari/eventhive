@@ -32,8 +32,8 @@ pipeline {
             steps {
                 script {
                     echo "Running pytest inside Docker container"
-                    // We can mount the current dir or build a testing stage
-                    sh "docker run --rm ${DOCKER_IMAGE}:latest pytest tests/"
+                    // Execute tests against the built Docker image
+                    sh "docker run --rm -e PYTHONPATH=/app ${DOCKER_IMAGE}:latest pytest tests/"
                 }
             }
         }

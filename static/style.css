@@ -1,0 +1,97 @@
+/* =========================================
+   EventHive Custom Theme & Styling
+   ========================================= */
+
+   body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    font-family: 'Inter', sans-serif;
+    color: #f8f9fa;
+    min-height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism Utilities */
+.bg-glassmorphism {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.glass-btn {
+    background: linear-gradient(45deg, #007bff, #00d2ff);
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5);
+    background: linear-gradient(45deg, #00d2ff, #007bff);
+}
+
+/* Card Hover Effects */
+.event-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4) !important;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.auth-card, .dashboard-card {
+    border-radius: 16px;
+}
+
+/* Form Styling */
+.form-control:focus {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border-color: #00d2ff;
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(0, 210, 255, 0.25);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #212529 inset !important;
+    -webkit-text-fill-color: white !important;
+}
+
+/* Typography Customization */
+.text-primary {
+    color: #00d2ff !important;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-primary {
+    color: #00d2ff;
+    border-color: #00d2ff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #00d2ff;
+    color: #000;
+}
+
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
